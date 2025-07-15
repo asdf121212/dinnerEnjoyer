@@ -149,24 +149,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const emailContent = `New dinner request!\n\nMain: ${mainWithOptions}\nSides: ${finalChoice.sides.join(', ') || 'None'}\nSpecial Requests: ${finalChoice.specialRequests || 'None'}`;
 
-        const details = {
-            email_content: emailContent
-        };
-
-        let formBody = [];
-        for (const property in details) {
-            const encodedKey = encodeURIComponent(property);
-            const encodedValue = encodeURIComponent(details[property]);
-            formBody.push(encodedKey + "=" + encodedValue);
-        }
-        formBody = formBody.join("&");
-
         fetch('https://www.unobstruct.io/api/misc/email-thomas', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                'Content-Type': 'application/json',
             },
-            body: formBody,
+            body: JSON.stringify({ email_content: emailContent }),
         })
         .then(response => {
             if (!response.ok) {
